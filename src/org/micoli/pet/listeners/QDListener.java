@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.micoli.minecraft.utils.ServerLogger;
 import org.micoli.pet.PetManager;
 
 public class QDListener implements Listener {
@@ -24,7 +25,7 @@ public class QDListener implements Listener {
 	}
 
 	void onEntityDamage(EntityDamageEvent event) {
-		PetManager.log(event.getEntity().toString());
+		ServerLogger.log(event.getEntity().toString());
 		if(event.getEntity() instanceof Creeper) {
 			PetManager.EntityDie(event.getEntity());
 		}
@@ -37,6 +38,11 @@ public class QDListener implements Listener {
 			plugin.setTarget(event.getPlayer());
 			event.setCancelled(true);
 		}
+		if (action == Action.RIGHT_CLICK_AIR && event.getPlayer().getInventory().getItemInHand().getType()==Material.SADDLE) {
+			plugin.mountTarget(event.getPlayer());
+			event.setCancelled(true);
+		}
+
 	}
 
 	@EventHandler

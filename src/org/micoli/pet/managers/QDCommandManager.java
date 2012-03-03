@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.micoli.minecraft.utils.ChatFormater;
+import org.micoli.minecraft.utils.ServerLogger;
 import org.micoli.pet.PetManager;
 
 public final class QDCommandManager implements CommandExecutor {
@@ -21,11 +22,13 @@ public final class QDCommandManager implements CommandExecutor {
 				Player player = (Player) sender;
 				if (command.getName().equalsIgnoreCase(PetManager.getCommandString())){
 					if (args.length > 0) {
-						PetManager.log("[PetManager] Command " + args[0]);
+						ServerLogger.log("Command " + args[0]);
 						if (args[0].equalsIgnoreCase("invoke")) {
-							plugin.invokePet(player,args.length==2?args[1]:"list");
+							plugin.invokePet(player,(args.length==2?args[1]:"LIST").toUpperCase());
 						}else if (args[0].equalsIgnoreCase("attack")) {
 							plugin.setTarget(player);
+						}else if (args[0].equalsIgnoreCase("heal")) {
+							plugin.healPet(player);
 						} else {
 							player.sendMessage(ChatFormater.format("{ChatColor.RED} command unknown"));
 						}
@@ -35,11 +38,11 @@ public final class QDCommandManager implements CommandExecutor {
 					return true;
 				}
 			} else {
-				PetManager.log(ChatFormater.format("[petmanager] requires you to be a Player"));
+				ServerLogger.log("[petmanager] requires you to be a Player");
 			}
 			return false;
 		} catch (Exception ex) {
-			PetManager.log(ChatFormater.format("[petmanager] Command failure: %s %s", ex.toString(),ex.getMessage()));
+			ServerLogger.log("[petmanager] Command failure: %s %s", ex.toString(),ex.getMessage());
 		}
 
 		return false;

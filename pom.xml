@@ -12,6 +12,10 @@
 			<id>org.bukkit</id>
 			<url>http://repo.bukkit.org/content/groups/public</url>
 		</repository>
+		<repository>
+			<id>org.micoli.minecraft</id>
+			<url>https://github.com/micoli/maven-repo/snapshots</url>
+		</repository>
 	</repositories>
 	<scm>
 		<connection>scm:git:https://github.com/micoli/minecraft-Pet.git</connection>
@@ -22,7 +26,13 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.1-R3-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.micoli.minecraft</groupId>
+			<artifactId>utils</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -33,15 +43,9 @@
 			<resource>
 				<targetPath>.</targetPath>
 				<filtering>true</filtering>
-				<directory>src/</directory>
+				<directory>/</directory>
 				<includes>
 					<include>plugin.yml</include>
-				</includes>
-			</resource>
-			<resource>
-				<directory>../minecraft-utils/src/</directory>
-				<includes>
-					<include>**/*.java</include>
 				</includes>
 			</resource>
 			<resource>
@@ -66,4 +70,13 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.bukkit</groupId>
+				<artifactId>bukkit</artifactId>
+				<version>1.1-R3-SNAPSHOT</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

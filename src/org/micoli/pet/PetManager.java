@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
@@ -22,11 +21,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.micoli.minecraft.utils.ChatFormater;
 import org.micoli.minecraft.utils.EntityManagement;
+import org.micoli.minecraft.utils.ServerLogger;
 import org.micoli.pet.listeners.QDListener;
 import org.micoli.pet.managers.QDCommandManager;
 
 public class PetManager extends JavaPlugin implements ActionListener {
-	private static Logger logger = Logger.getLogger("Minecraft");
 	private QDCommandManager myExecutor;
 	private static PetManager instance;
 	private static Map<String, QDObjectPet> aPets;
@@ -65,10 +64,6 @@ public class PetManager extends JavaPlugin implements ActionListener {
 		return comments;
 	}
 
-	public static void log(String str) {
-		logger.info(str);
-	}
-
 	public void actionPerformed(ActionEvent event) {
 	}
 
@@ -88,7 +83,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 	@Override
 	public void onDisable() {
 		PluginDescriptionFile pdfFile = getDescription();
-		log(ChatFormater.format("%s version disabled", pdfFile.getName(), pdfFile.getVersion()));
+		ServerLogger.log("%s version disabled", pdfFile.getName(), pdfFile.getVersion());
 	}
 
 	@Override
@@ -101,7 +96,8 @@ public class PetManager extends JavaPlugin implements ActionListener {
 		pm.registerEvents(new QDListener(this), this);
 		getCommand(getCommandString()).setExecutor(myExecutor);
 
-		log(ChatFormater.format("%s version enabled", pdfFl.getName(), pdfFl.getVersion()));
+		ServerLogger.setPrefix(getCommandString());
+		ServerLogger.log("%s version enabled", pdfFl.getName(), pdfFl.getVersion());
 	}
 
 	public ArrayList<CreatureType> getEggList(Player player){
@@ -113,12 +109,12 @@ public class PetManager extends JavaPlugin implements ActionListener {
 					int subData = (int) i.getData().getData();
 					if (petEggTypes.containsKey(subData)) {
 						rtn.add(petEggTypes.get(subData));
-						log("ee" + petEggTypes.get(subData).toString());
+						ServerLogger.log("ee" + petEggTypes.get(subData).toString());
 					}
 				}
 			}
 		} catch (Exception ex) {
-			log("rrrr"+ex.toString());
+			ServerLogger.log("Exception "+ex.toString());
 		}
 		return rtn;
 	}
@@ -126,7 +122,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 	public void invokePet(Player owner,String subCommand){
 		ArrayList<CreatureType> myEggs = getEggList(owner);
 
-		if(subCommand.equalsIgnoreCase("list")){
+		if(subCommand.equalsIgnoreCase("LIST")){
 			sendComments(owner,"You can invoke "+ myEggs.toString(),false);
 			return;
 		}
@@ -153,7 +149,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 	}
 
 	public static void EntityDie(Entity dead){
-		log("testing dead of "+dead.toString());
+		ServerLogger.log("testing dead of "+dead.toString());
 		Iterator<String> iterator = aPets.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
@@ -161,12 +157,20 @@ public class PetManager extends JavaPlugin implements ActionListener {
 			if (pet.mob == dead){
 				pet.die();
 				sendComments(pet.owner,"Your pet died",false);
-				log("pet from " + key + " died");
+				ServerLogger.log("pet from " + key + " died");
 				aPets.remove(key);
 			}
 		}
 	}
 
+	public void mountTarget(Player player){
+		Entity tgt = EntityManagement.getTarget(player);
+		if (tgt!= null){
+			tgt.setPassenger(player);
+		}else{
+			player.leaveVehicle();
+		}
+	}
 	public void setTarget(Player player){
 		if (aPets.containsKey(player.getName())){
 			Entity tgt = EntityManagement.getTarget(player);
@@ -174,6 +178,16 @@ public class PetManager extends JavaPlugin implements ActionListener {
 			SimpleDateFormat hourFmt = new SimpleDateFormat("HH:mm:ss");
 			sendComments(player,"target "+tgt.toString()+" "+hourFmt.format(now),false);
 			((Monster) aPets.get(player.getName()).mob).setTarget(tgt==null?null:(LivingEntity)tgt);
+		}else{
+			sendComments(player,ChatFormater.format("You don't have {ChatColor.RED}a pet"),false);
+		}
+	}
+
+	public void healPet(Player player){
+		if (aPets.containsKey(player.getName())){
+			LivingEntity pet = aPets.get(player.getName()).mob;
+			sendComments(player,ChatFormater.format("Your pet was at %d, now it is full life",pet.getHealth()),false);
+			pet.setHealth(pet.getMaxHealth());
 		}
 	}
 
