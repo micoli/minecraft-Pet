@@ -1,4 +1,4 @@
-package org.micoli.pet.listeners;
+package org.micoli.minecraft.petmanager.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
@@ -9,8 +9,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.micoli.minecraft.petmanager.PetManager;
 import org.micoli.minecraft.utils.ServerLogger;
-import org.micoli.pet.PetManager;
 
 public class QDListener implements Listener {
 	PetManager plugin;

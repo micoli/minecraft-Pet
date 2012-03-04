@@ -1,4 +1,4 @@
-package org.micoli.pet;
+package org.micoli.minecraft.petmanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,11 +19,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.micoli.minecraft.petmanager.entities.QDObjectPet;
+import org.micoli.minecraft.petmanager.listeners.QDListener;
+import org.micoli.minecraft.petmanager.managers.QDCommandManager;
 import org.micoli.minecraft.utils.ChatFormater;
 import org.micoli.minecraft.utils.EntityManagement;
 import org.micoli.minecraft.utils.ServerLogger;
-import org.micoli.pet.listeners.QDListener;
-import org.micoli.pet.managers.QDCommandManager;
 
 public class PetManager extends JavaPlugin implements ActionListener {
 	private QDCommandManager myExecutor;
@@ -154,9 +155,9 @@ public class PetManager extends JavaPlugin implements ActionListener {
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			QDObjectPet pet = (QDObjectPet) aPets.get(key);
-			if (pet.mob == dead){
+			if (pet.getMob() == dead){
 				pet.die();
-				sendComments(pet.owner,"Your pet died",false);
+				sendComments(pet.getOwner(),"Your pet died",false);
 				ServerLogger.log("pet from " + key + " died");
 				aPets.remove(key);
 			}
@@ -177,7 +178,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 			Date now = new Date();
 			SimpleDateFormat hourFmt = new SimpleDateFormat("HH:mm:ss");
 			sendComments(player,"target "+tgt.toString()+" "+hourFmt.format(now),false);
-			((Monster) aPets.get(player.getName()).mob).setTarget(tgt==null?null:(LivingEntity)tgt);
+			((Monster) aPets.get(player.getName()).getMob()).setTarget(tgt==null?null:(LivingEntity)tgt);
 		}else{
 			sendComments(player,ChatFormater.format("You don't have {ChatColor.RED}a pet"),false);
 		}
@@ -185,7 +186,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 
 	public void healPet(Player player){
 		if (aPets.containsKey(player.getName())){
-			LivingEntity pet = aPets.get(player.getName()).mob;
+			LivingEntity pet = aPets.get(player.getName()).getMob();
 			sendComments(player,ChatFormater.format("Your pet was at %d, now it is full life",pet.getHealth()),false);
 			pet.setHealth(pet.getMaxHealth());
 		}
@@ -196,7 +197,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 			QDObjectPet pet = (QDObjectPet) aPets.get(key);
-			if (player == pet.owner){
+			if (player == pet.getOwner()){
 				//Location loc = player.getLocation();
 				//pet.mob.teleport(loc.add(new Vector(0,0,1)));
 			}

@@ -1,5 +1,5 @@
 name: PetManager
-main: org.micoli.pet.PetManager
+main: org.micoli.minecraft.petmanager.PetManager
 version: 0.3
 description:
 commands:

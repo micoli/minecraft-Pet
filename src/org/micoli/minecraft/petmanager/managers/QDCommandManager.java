@@ -1,12 +1,12 @@
-package org.micoli.pet.managers;
+package org.micoli.minecraft.petmanager.managers;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.micoli.minecraft.petmanager.PetManager;
 import org.micoli.minecraft.utils.ChatFormater;
 import org.micoli.minecraft.utils.ServerLogger;
-import org.micoli.pet.PetManager;
 
 public final class QDCommandManager implements CommandExecutor {
 	private PetManager plugin;
