@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
@@ -19,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 import org.micoli.minecraft.petmanager.entities.QDObjectPet;
 import org.micoli.minecraft.petmanager.listeners.QDListener;
 import org.micoli.minecraft.petmanager.managers.QDCommandManager;
@@ -110,7 +112,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 					int subData = (int) i.getData().getData();
 					if (petEggTypes.containsKey(subData)) {
 						rtn.add(petEggTypes.get(subData));
-						ServerLogger.log("ee" + petEggTypes.get(subData).toString());
+						ServerLogger.log("EggType " + petEggTypes.get(subData).toString());
 					}
 				}
 			}
@@ -140,13 +142,22 @@ public class PetManager extends JavaPlugin implements ActionListener {
 				QDObjectPet pet = new QDObjectPet(owner,newMobType);
 				aPets.put(owner.getName(), pet);
 			}else{
-				sendComments(owner,"Unknown pet type",false);
+				String typeList = "";
+				String typeSepa = "";
+				Iterator<Integer> iterator = petEggTypes.keySet().iterator();
+				while (iterator.hasNext()) {
+					Integer key = iterator.next();
+					CreatureType type = (CreatureType) petEggTypes.get(key);
+					typeList = typeList + typeSepa + type.toString().toUpperCase();
+					typeSepa = ", ";
+				}
+				sendComments(owner,"You don't have the egg corresponding to that Monster which can be : "+typeList,false);
 			}
 		}
-		owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.CHICKEN);
-		owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.COW);
-		owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.GHAST);
-		owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.PIG);
+		//owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.CHICKEN);
+		//owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.COW);
+		//owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.GHAST);
+		//owner.getWorld().spawnCreature(owner.getLocation(), CreatureType.PIG);
 	}
 
 	public static void EntityDie(Entity dead){
@@ -187,7 +198,7 @@ public class PetManager extends JavaPlugin implements ActionListener {
 	public void healPet(Player player){
 		if (aPets.containsKey(player.getName())){
 			LivingEntity pet = aPets.get(player.getName()).getMob();
-			sendComments(player,ChatFormater.format("Your pet was at %d, now it is full life",pet.getHealth()),false);
+			sendComments(player,ChatFormater.format("Your pet was at %d/20, now it is full life",pet.getHealth()),false);
 			pet.setHealth(pet.getMaxHealth());
 		}
 	}
@@ -198,8 +209,8 @@ public class PetManager extends JavaPlugin implements ActionListener {
 			String key = iterator.next();
 			QDObjectPet pet = (QDObjectPet) aPets.get(key);
 			if (player == pet.getOwner()){
-				//Location loc = player.getLocation();
-				//pet.mob.teleport(loc.add(new Vector(0,0,1)));
+				Location loc = player.getLocation();
+				pet.getMob().teleport(loc.add(new Vector(0,0,1)));
 			}
 		}
 	}

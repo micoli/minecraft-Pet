@@ -8,7 +8,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.micoli.minecraft.petmanager.PetManager;
 import org.micoli.minecraft.utils.ServerLogger;
 
@@ -47,8 +46,8 @@ public class QDListener implements Listener {
 
 	}
 
-	@EventHandler
+	/*@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		plugin.playerMove(event.getPlayer());
-	}
+	}*/
 }
