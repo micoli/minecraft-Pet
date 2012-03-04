@@ -77,13 +77,43 @@
 							<addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
 							<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
 						</manifest>
+						<!-- 
 						<manifestEntries>
 							<Class-Path>utils-0.0.1-SNAPSHOT.jar</Class-Path>
 						</manifestEntries>
+						 -->
 					</archive>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<shadedArtifactAttached>false</shadedArtifactAttached>
+							<artifactSet>
+								<includes>
+									<include>org.micoli.minecraft:morg-utils:jar:*</include>
+								</includes>
+							</artifactSet>
+							<filters>
+								<filter>
+									<artifact>org.micoli.minecraft:morg-utils:jar:*</artifact>
+									<includes>
+										<include>org/micoli/minecraft/**</include>
+									</includes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- Assembly -->
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -101,7 +131,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
 	<properties>
