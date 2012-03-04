@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.micoli.minecraft</groupId>
-			<artifactId>utils</artifactId>
+			<artifactId>morg-utils</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
