@@ -20,13 +20,13 @@ public class QDListener implements Listener {
 	}
 
 	@EventHandler
-	public void onEntityDeath(EntityDeathEvent event){
+	public void onEntityDeath(EntityDeathEvent event) {
 		PetManager.EntityDie(event.getEntity());
 	}
 
 	void onEntityDamage(EntityDamageEvent event) {
 		ServerLogger.log(event.getEntity().toString());
-		if(event.getEntity() instanceof Creeper) {
+		if (event.getEntity() instanceof Creeper) {
 			PetManager.EntityDie(event.getEntity());
 		}
 	}
@@ -34,11 +34,13 @@ public class QDListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Action action = event.getAction();
-		if (action == Action.RIGHT_CLICK_AIR && event.getPlayer().getInventory().getItemInHand().getType()==Material.ENDER_PEARL) {
+		if (action == Action.RIGHT_CLICK_AIR
+				&& event.getPlayer().getInventory().getItemInHand().getType() == Material.ENDER_PEARL) {
 			plugin.setTarget(event.getPlayer());
 			event.setCancelled(true);
 		}
-		if (action == Action.RIGHT_CLICK_AIR && event.getPlayer().getInventory().getItemInHand().getType()==Material.SADDLE) {
+		if (action == Action.RIGHT_CLICK_AIR
+				&& event.getPlayer().getInventory().getItemInHand().getType() == Material.SADDLE) {
 			plugin.mountTarget(event.getPlayer());
 			event.setCancelled(true);
 		}
