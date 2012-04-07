@@ -137,7 +137,11 @@
 				<version>1.1.1</version>
 				<executions>
 					<execution>
+<<<<<<< HEAD
 						<phase>package</phase>
+=======
+						<phase>site</phase>
+>>>>>>> change exec reload to site phase in pom
 						<goals>
 							<goal>exec</goal>
 						</goals>
