@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.micoli.minecraft.petmanager.PetManager;
 import org.micoli.minecraft.utils.ChatFormater;
-import org.micoli.minecraft.utils.ServerLogger;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -36,9 +35,9 @@ public final class QDCommandManager implements CommandExecutor {
 			if (sender instanceof Player) {
 				Player player = (Player) sender;
 				if (command.getName().equalsIgnoreCase(
-						PetManager.getCommandString())) {
+						PetManager.getInstance().getCommandString())) {
 					if (args.length > 0) {
-						ServerLogger.log("Command " + args[0]);
+						plugin.logger.log("Command " + args[0]);
 						if (args[0].equalsIgnoreCase("invoke")) {
 							plugin.invokePet(player,
 									(args.length == 2 ? args[1] : "LIST")
@@ -58,11 +57,11 @@ public final class QDCommandManager implements CommandExecutor {
 					return true;
 				}
 			} else {
-				ServerLogger.log("[petmanager] requires you to be a Player");
+				plugin.logger.log("[petmanager] requires you to be a Player");
 			}
 			return false;
 		} catch (Exception ex) {
-			ServerLogger.log("[petmanager] Command failure: %s %s",
+			plugin.logger.log("[petmanager] Command failure: %s %s",
 					ex.toString(), ex.getMessage());
 		}
 

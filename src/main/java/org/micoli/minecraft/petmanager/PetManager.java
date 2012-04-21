@@ -17,7 +17,6 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.util.Vector;
 import org.micoli.minecraft.bukkit.QDBukkitPlugin;
 import org.micoli.minecraft.petmanager.entities.QDObjectPet;
@@ -25,7 +24,6 @@ import org.micoli.minecraft.petmanager.listeners.QDListener;
 import org.micoli.minecraft.petmanager.managers.QDCommandManager;
 import org.micoli.minecraft.utils.ChatFormater;
 import org.micoli.minecraft.utils.EntityManagement;
-import org.micoli.minecraft.utils.ServerLogger;
 
 /**
  * The Class PetManager.
@@ -65,17 +63,13 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 		return instance;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.micoli.minecraft.bukkit.QDBukkitPlugin#onEnable()
-	 */
 	@Override
 	public void onEnable() {
-		super.onEnable();
 		commandString				= "qdpet";
-		aPets						= new HashMap<String, QDObjectPet>();
 		instance					= this;
+		super.onEnable();
+		aPets						= new HashMap<String, QDObjectPet>();
 		executor					= new QDCommandManager(this);
-		PluginManager pm 			= getServer().getPluginManager();
 		pm.registerEvents(new QDListener(this), this);
 		getCommand(getCommandString()).setExecutor(executor);
 	}
@@ -97,12 +91,12 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 					int subData = (int) item.getData().getData();
 					if (petEggTypes.containsKey(subData)) {
 						rtn.add(petEggTypes.get(subData));
-						ServerLogger.log("EggType " + petEggTypes.get(subData).toString());
+						logger.log("EggType " + petEggTypes.get(subData).toString());
 					}
 				}
 			}
 		} catch (Exception ex) {
-			ServerLogger.log("Exception "+ex.toString());
+			logger.log("Exception "+ex.toString());
 		}
 		return rtn;
 	}
@@ -156,8 +150,8 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 	 *
 	 * @param dead the dead
 	 */
-	public static void EntityDie(Entity dead){
-		ServerLogger.log("testing dead of "+dead.toString());
+	public void EntityDie(Entity dead){
+		getInstance().logger.log("testing dead of "+dead.toString());
 		Iterator<String> iterator = aPets.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = iterator.next();
@@ -165,7 +159,7 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 			if (pet.getMob() == dead){
 				pet.die();
 				sendComments(pet.getOwner(),"Your pet died",false);
-				ServerLogger.log("pet from " + key + " died");
+				getInstance().logger.log("pet from " + key + " died");
 				aPets.remove(key);
 			}
 		}

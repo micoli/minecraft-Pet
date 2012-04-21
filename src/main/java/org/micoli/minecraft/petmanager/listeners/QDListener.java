@@ -9,9 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.micoli.minecraft.petmanager.PetManager;
-import org.micoli.minecraft.utils.ServerLogger;
 
-// TODO: Auto-generated Javadoc
 /**
  * The listener interface for receiving QD events.
  * The class that is interested in processing a QD
@@ -44,7 +42,7 @@ public class QDListener implements Listener {
 	 */
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		PetManager.EntityDie(event.getEntity());
+		PetManager.getInstance().EntityDie(event.getEntity());
 	}
 
 	/**
@@ -53,9 +51,9 @@ public class QDListener implements Listener {
 	 * @param event the event
 	 */
 	void onEntityDamage(EntityDamageEvent event) {
-		ServerLogger.log(event.getEntity().toString());
+		PetManager.getInstance().logger.log(event.getEntity().toString());
 		if (event.getEntity() instanceof Creeper) {
-			PetManager.EntityDie(event.getEntity());
+			PetManager.getInstance().EntityDie(event.getEntity());
 		}
 	}
 

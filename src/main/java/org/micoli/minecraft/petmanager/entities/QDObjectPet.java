@@ -8,7 +8,6 @@ import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.micoli.minecraft.petmanager.PetManager;
-import org.micoli.minecraft.utils.ServerLogger;
 import org.micoli.minecraft.utils.Task;
 
 /**
@@ -85,7 +84,7 @@ public class QDObjectPet {
 		world.strikeLightningEffect(player.getLocation().add(0, 3, 0));
 		runningTask = new Task(plugin, this) {
 			public void run() {
-				ServerLogger.log("ee");
+				PetManager.getInstance().logger.log("ee");
 				((QDObjectPet) this.getArg(0)).run();
 				if (isRunning) {
 					this.startDelayed(10L);
@@ -117,7 +116,7 @@ public class QDObjectPet {
 	 */
 	public void run() {
 		if (mob.isDead()) {
-			PetManager.EntityDie(mob);
+			PetManager.getInstance().EntityDie(mob);
 		}
 
 		if (getMobTarget() != null) {
