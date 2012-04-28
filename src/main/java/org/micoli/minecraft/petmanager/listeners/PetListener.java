@@ -77,9 +77,4 @@ public class PetListener implements Listener {
 		}
 
 	}
-
-	/*@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event) {
-		plugin.playerMove(event.getPlayer());
-	}*/
 }

@@ -119,11 +119,11 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 		ArrayList<EntityType> myEggs = getEggList(owner);
 
 		if (subCommand.equalsIgnoreCase("LIST")) {
-			sendComments(owner, "You can invoke " + myEggs.toString(), false);
+			sendComments(owner, "You can invoke " + myEggs.toString());
 			return;
 		}
 		if (aPets.containsKey(owner.getName())) {
-			sendComments(owner, "You already have a pet", false);
+			sendComments(owner, "You already have a pet");
 		} else {
 			EntityType newMobType = null;
 			for (EntityType typ : myEggs) {
@@ -144,7 +144,7 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 					typeList = typeList + typeSepa + type.toString().toUpperCase();
 					typeSepa = ", ";
 				}
-				sendComments(owner, "You don't have the egg corresponding to that Monster which can be : " + typeList, false);
+				sendComments(owner, "You don't have the egg corresponding to that Monster which can be : " + typeList);
 			}
 		}
 		// owner.getWorld().spawnCreature(owner.getLocation(),
@@ -164,16 +164,16 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 	 *            the dead
 	 */
 	public void EntityDie(Entity dead) {
-		getInstance().logger.log("testing dead of " + dead.toString());
+		//getInstance().logger.log("Testing dead of " + dead.toString());
 		Iterator<String> iterator = aPets.keySet().iterator();
 		while (iterator.hasNext()) {
-			String key = iterator.next();
-			QDObjectPet pet = (QDObjectPet) aPets.get(key);
+			String playerName = iterator.next();
+			QDObjectPet pet = (QDObjectPet) aPets.get(playerName);
 			if (pet.getMob() == dead) {
 				pet.die();
-				sendComments(pet.getOwner(), "Your pet died", false);
-				getInstance().logger.log("pet from " + key + " died");
-				aPets.remove(key);
+				sendComments(pet.getOwner(), "Your pet died");
+				logger.log("pet from " + playerName + " died");
+				aPets.remove(playerName);
 			}
 		}
 	}
@@ -204,10 +204,10 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 			Entity tgt = EntityManagement.getTarget(player);
 			Date now = new Date();
 			SimpleDateFormat hourFmt = new SimpleDateFormat("HH:mm:ss");
-			sendComments(player, "target " + tgt.toString() + " " + hourFmt.format(now), false);
+			sendComments(player, "target " + tgt.toString() + " " + hourFmt.format(now));
 			((Monster) aPets.get(player.getName()).getMob()).setTarget(tgt == null ? null : (LivingEntity) tgt);
 		} else {
-			sendComments(player, ChatFormater.format("You don't have {ChatColor.RED}a pet"), false);
+			sendComments(player, ChatFormater.format("You don't have {ChatColor.RED}a pet"));
 		}
 	}
 
@@ -220,7 +220,7 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 	public void healPet(Player player) {
 		if (aPets.containsKey(player.getName())) {
 			LivingEntity pet = aPets.get(player.getName()).getMob();
-			sendComments(player, ChatFormater.format("Your pet was at %d/20, now it is full life", pet.getHealth()), false);
+			sendComments(player, ChatFormater.format("Your pet was at %d/20, now it is full life", pet.getHealth()));
 			pet.setHealth(pet.getMaxHealth());
 		}
 	}
