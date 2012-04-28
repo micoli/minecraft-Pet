@@ -21,7 +21,7 @@ import org.micoli.minecraft.petmanager.PetManager;
  *
  * @see QDEvent
  */
-public class QDListener implements Listener {
+public class PetListener implements Listener {
 	
 	/** The plugin. */
 	PetManager plugin;
@@ -31,7 +31,7 @@ public class QDListener implements Listener {
 	 *
 	 * @param plugin the plugin
 	 */
-	public QDListener(PetManager plugin) {
+	public PetListener(PetManager plugin) {
 		this.plugin = plugin;
 	}
 
