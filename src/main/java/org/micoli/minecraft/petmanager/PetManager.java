@@ -76,7 +76,7 @@ public class PetManager extends QDBukkitPlugin implements ActionListener {
 		aPets = new HashMap<String, QDObjectPet>();
 		
 		executor = new QDCommandManager((QDBukkitPlugin)this,new Class[] { getClass() });
-		pm.registerEvents(new PetListener(this), this);
+		getPm().registerEvents(new PetListener(this), this);
 	}
 
 	/**
